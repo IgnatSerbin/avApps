@@ -2,4 +2,6 @@
 <resources>
     <string name="btnSale">Купить</string>
     <string name="title">Title</string>
+    <string name="saleProduct">Рекомендуемые товары:</string>
+    <string name="permission_denied">Доступ запрещен!</string>
 </resources>

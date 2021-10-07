@@ -1,4 +1,4 @@
-package com.example.avapps
+package com.example.avapps.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.avapps.ui.ProductPage
+import com.example.avapps.R
 import com.example.avapps.databinding.ItemProductBinding
 import com.example.avapps.dataclass.SaleProduct
 import com.example.avapps.dataclass.ProductCart

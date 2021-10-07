@@ -6,5 +6,5 @@ data class SaleProduct(
     val price: String,
     val img: String,
     val country: String,
-    val quantity: Int,
+    val quantity: Int
 )

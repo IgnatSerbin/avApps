@@ -1,38 +1,51 @@
-package com.example.avapps
+package com.example.avapps.ui
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.GridLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.avapps.R
+import com.example.avapps.adapter.ProductAdapter
 import com.example.avapps.databinding.ActivityMainBinding
+import com.example.avapps.dataclass.ImageBanner
 import com.example.avapps.dataclass.SaleProduct
-import com.fasterxml.jackson.core.TreeNode
-import com.fasterxml.jackson.databind.JsonNode
+import com.example.avapps.helper.Noder
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FileUtils
-import retrofit2.awaitResponse
 import java.io.File
 import java.io.IOException
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
     private val jsonSaleProduct = """
         {
+          "imgBanners": [
+            {
+            "bannerId": 301,
+            "bannerImage": "imgBanner1.png"
+            },
+            {
+            "bannerId": 302,
+            "bannerImage": "imgBanner2.png"
+            },
+            {
+            "bannerId": 303,
+            "bannerImage": "imgBanner3.png"
+            },
+            {
+            "bannerId": 304,
+            "bannerImage": "imgBanner4.png"
+            }
+          ],
           "saleListProduct": [
             {
               "productId": 101,
@@ -256,35 +269,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        adapter.setHasStableIds(true)
 
-        val imgSaleUrl: Array<String>? = null
         var saleProducts: Array<SaleProduct>
+        var imageBanners: Array<ImageBanner>
         var count = 0
-        //val storageDirectory = this.getExternalFilesDir(imgPath).toString()
-        //saleProducts[0].img
         val msgErrorText = findViewById<TextView>(R.id.msgErrorText)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val saleProduct = findViewById<TextView>(R.id.saleProductId)
+        progressBar.visibility = View.VISIBLE
 
-        GlobalScope.launch(Dispatchers.IO) {
+//        GlobalScope.launch(Dispatchers.Default) {
+        GlobalScope.launch(Dispatchers.Default){
             try {
                 val json = objectMapper.readTree(jsonSaleProduct)
-                val saleProduct = json.get("saleListProduct")
-                saleProducts = Noder.fromNode(saleProduct)
-                while (count < saleProducts.size) {
-                    val response = DataLoader.retrofit.getSaleImage(saleProducts[count].img).awaitResponse().body()
-                    downloadImg(saleProducts[count].img, response!!.byteStream().readBytes())
-                    count++
-                }
-                Log.d("DOWNLOAD_IMAGE_COMPLETED", "OK")
-
+                val jsonSaleProduct = json.get("saleListProduct")
+                saleProducts = Noder.fromNode(jsonSaleProduct)
+                val jsonBanner = json.get("imgBanners")
+                imageBanners = Noder.fromNode(jsonBanner)
                 count = 0
 
-               // CoroutineScope(Dispatchers.Main).launch {
-                 runOnUiThread{
+
+                CoroutineScope(Dispatchers.Main).launch {
+//                runOnUiThread {
                     binding.apply {
-                        rcView.layoutManager = GridLayoutManager(this@MainActivity, 4)
+                        imgBanner.setImageURI(Uri.parse(getExternalFilesDir(imageBanners[0].bannerImage).toString()))
+                        rcView.layoutManager = GridLayoutManager(this@MainActivity, 3)
                         rcView.adapter = adapter
-                        while (count < saleProduct.size()) {
+                        while (count < jsonSaleProduct.size()) {
                             val products = SaleProduct(
                                 saleProducts[count].productId,
                                 saleProducts[count].title,
@@ -296,23 +308,20 @@ class MainActivity : AppCompatActivity() {
                             adapter.addSaleProduct(products)
                             count++
                         }
-
                     }
+                    progressBar.visibility = View.INVISIBLE
+                    saleProduct.visibility = View.VISIBLE
                 }
-                progressBar.visibility = View.INVISIBLE
             } catch (e: IOException) {
                 progressBar.visibility = View.INVISIBLE
                 Log.d("DOWNLOAD IMAGE", e.toString())
-                CoroutineScope(Dispatchers.Main).launch{
+                CoroutineScope(Dispatchers.Main).launch {
                     msgErrorText.visibility = View.VISIBLE
-                    msgErrorText.text = e.message + "\n" + "Проверьте соединение с интернетом и перезапустите приложение"
+                    msgErrorText.text =
+                        e.message + "\n" + "Проверьте соединение с интернетом и перезапустите приложение"
                 }
             }
         }
-    }
-
-    private fun init() {
-
     }
 
     private fun downloadImg(imgUrl: String, imgString: ByteArray) {

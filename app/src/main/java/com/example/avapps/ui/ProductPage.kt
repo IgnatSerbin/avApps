@@ -1,4 +1,4 @@
-package com.example.avapps
+package com.example.avapps.ui
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -7,14 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import com.example.avapps.R
 import com.example.avapps.dataclass.SaleProduct
-import com.fasterxml.jackson.core.TreeNode
-import com.fasterxml.jackson.databind.JsonNode
+import com.example.avapps.helper.Noder
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import java.io.File
 import java.io.IOException
 
 class ProductPage : AppCompatActivity() {

@@ -10,6 +10,9 @@ interface DataApi {
     @GET("/imgSaleProducts/{imgUrl}")
     fun getSaleImage(@Path("imgUrl") imgUrl: String
     ): Call<ResponseBody>
+    @GET("/imgBanner/{imgUrl}")
+    fun getBannerImage(@Path("imgUrl") imgUrl: String
+    ): Call<ResponseBody>
     @GET("/jsonSaleProduct/{jsonSale}")
     fun getJsonSaleProduct(@Path("jsonSale") jsonSale: String
     ): Call<ResponseBody>

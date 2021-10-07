@@ -5,15 +5,52 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
-    <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="1dp" android:id="@+id/rcView"
-            android:layout_marginTop="1dp"/>
+        tools:context=".ui.MainActivity">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/scrollView2">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:ignore="MissingConstraints"
+                    android:padding="8dp"
+                    android:id="@+id/linearLayoutCompat"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="203dp"
+                        android:id="@+id/imgBanner"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                    android:id="@+id/saleProductId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:visibility="invisible"
+                    android:text="@string/saleProduct"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rcView"
+                    tools:ignore="MissingConstraints" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
     <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
@@ -26,12 +63,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/msgErrorText"
             app:layout_constraintTop_toBottomOf="@+id/progressBar"
-            app:layout_constraintBottom_toBottomOf="@+id/rcView" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" tools:visibility="invisible" android:gravity="center"/>
     <ImageView
             android:layout_width="49dp"
-            android:layout_height="46dp" app:srcCompat="@drawable/ic_action_cart" android:id="@+id/imageView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.94"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"/>
+            android:layout_height="46dp"
+            app:srcCompat="@drawable/ic_action_cart"
+            android:id="@+id/imageView2" tools:ignore="MissingConstraints" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+            app:layout_constraintHorizontal_bias="0.95" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.95"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
